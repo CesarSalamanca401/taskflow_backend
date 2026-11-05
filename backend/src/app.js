@@ -51,6 +51,12 @@ async function iniciar() {
   app.listen(PORT, () => {
     console.log(`[app] Backend TaskFlow escuchando en el puerto ${PORT}`);
   });
+  // Opcional: ejecutar el worker dentro de este mismo proceso (útil en hostings sin workers gratuitos).
+  // Actívalo con RUN_WORKER=1. En Docker/local sigue siendo un servicio aparte.
+  if (process.env.RUN_WORKER === '1') {
+    console.log('[app] RUN_WORKER=1: iniciando el worker en este proceso');
+    require('./worker');
+  }
 }
 
 if (require.main === module) iniciar();
